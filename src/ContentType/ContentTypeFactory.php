@@ -2,8 +2,12 @@
 
 namespace BazaarvoiceConversations\ContentType;
 
-use BazaarvoiceConversations\Request\BazaarvoiceRequestInterface;
+use BazaarvoiceRequest\BazaarvoiceRequestInterface;
 
+/**
+ * Class ContentTypeFactory
+ * @package BazaarvoiceConversations\ContentType
+ */
 class ContentTypeFactory {
 
   const NS = 'BazaarvoiceConversations\\ContentType\\';
@@ -33,7 +37,7 @@ class ContentTypeFactory {
       if (class_exists($class)) {
         // Check that this class extends the ContentTypeBase class.
         if (is_subclass_of($class, self::NS . 'ContentTypeBase')) {
-          // instantiate object of this class.
+          // Instantiate object of this class.
           $object = new $class($this->bazaarvoiceRequest);
         }
       }

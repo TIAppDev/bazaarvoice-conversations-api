@@ -3,8 +3,8 @@
 namespace BazaarvoiceConversations;
 
 use BazaarvoiceConversations\ContentType\ContentTypeFactory;
-use BazaarvoiceRequest\BazaarvoiceRequest;
 use BazaarvoiceRequest\BazaarvoiceRequestInterface;
+
 
 class BazaarvoiceConversations {
 

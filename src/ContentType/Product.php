@@ -2,12 +2,12 @@
 
 namespace BazaarvoiceConversations\ContentType;
 
-
+/**
+ * Class Product
+ * @package BazaarvoiceConversations\ContentType
+ */
 class Product extends ContentTypeBase implements RetrieveContentInterface {
 
-  /**
-   * Override parent getSingle().
-   */
   public function getSingle($id, array $parameters = []) {
     $product = FALSE;
     // Call getMultiple, passing ID as an array.
@@ -18,9 +18,6 @@ class Product extends ContentTypeBase implements RetrieveContentInterface {
     return $product;
   }
 
-  /**
-   * Override parent getMultiple().
-   */
   public function getMultiple(array $ids, array $parameters = []) {
     // Set default filter for product ids.
     $parameters['filter']['productid'] = $ids;

@@ -2,7 +2,10 @@
 
 namespace BazaarvoiceConversations\ContentType;
 
-
+/**
+ * Interface RetrieveContentInterface
+ * @package BazaarvoiceConversations\ContentType
+ */
 interface RetrieveContentInterface {
 
   /**
