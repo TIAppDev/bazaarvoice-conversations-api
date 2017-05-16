@@ -1,0 +1,44 @@
+<?php
+
+namespace BazaarvoiceConversations\ContentType;
+
+use BazaarvoiceConversations\Request\BazaarvoiceRequestInterface;
+
+class ContentTypeFactory {
+
+  const NS = 'BazaarvoiceConversations\\ContentType\\';
+
+  private $bazaarvoiceRequest;
+
+  public function __construct(BazaarvoiceRequestInterface $request) {
+    $this->bazaarvoiceRequest = $request;
+  }
+
+  /**
+   * Instantiate a Bazaarvoice Content Type class object.
+   *
+   * @param string $content_type
+   *   String name of content type class.
+   *
+   * @return mixed
+   *   Boolean false or instance of the class
+   */
+  public function build($content_type = NULL) {
+    $object = FALSE;
+    // Check that a string was passed.
+    if (is_string($content_type)) {
+      // Build class string.
+      $class = self::NS . ucwords($content_type);
+      // Check to see if this class exists.
+      if (class_exists($class)) {
+        // Check that this class extends the ContentTypeBase class.
+        if (is_subclass_of($class, self::NS . 'ContentTypeBase')) {
+          // instantiate object of this class.
+          $object = new $class($this->bazaarvoiceRequest);
+        }
+      }
+    }
+    return $object;
+  }
+
+}

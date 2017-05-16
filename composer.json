@@ -1,0 +1,23 @@
+{
+  "name": "mikemiles86/bazaarvoice-conversations-api",
+  "type": "library",
+  "description": "PHP Wrapper for the Bazaarvoice Conversations API",
+  "keywords": [
+    "bazaarvoice"
+  ],
+  "homepage": "https://github.com/mikemiles86/bazaarvoice-conversations-api",
+  "license": "MIT",
+  "authors": [{
+    "name": "Michael Miles",
+    "email": "mikemiles86@gmail.com"
+  }],
+  "require": {
+    "php": ">=5.5",
+    "guzzlehttp/guzzle": "~6.0"
+  },
+  "autoload": {
+    "psr-4" : {
+      "BazaarvoiceConversations\\" : "src/"
+    }
+  }
+}
