@@ -6,80 +6,55 @@ namespace BazaarvoiceConversations\ContentType;
  * Class Comments
  * @package BazaarvoiceConversations\ContentType
  */
-class Comments extends ContentTypeBase implements RetrieveContentInterface, SubmitContentInterface  {
+class Comments extends SubmitContentTypeBase {
 
-  public function getSingle($id, array $parameters = []) {
-    $single_content = FALSE;
-    // Call getMultiple, passing ID as an array.
-    if ($multiple_content = $this->getMultiple([$id], $parameters)) {
-      // Pop off the returned object.
-      $single_content = array_pop($multiple_content);
+  protected $retrieve_endpoint = 'data/reviewcomments';
+  protected $submit_endpoint = 'data/submitcomment';
+  protected $submit_response_type = 'BazaarvoiceConversations\\Response\\CommentSubmitResponse';
+
+  /**
+   * Retrieve comments for a specific Product based on Product Id.
+   *
+   * @param string $product_id
+   *   Unique ID of the Product.
+   *
+   * @param array $configuration
+   *   API request configuration to pass along. key/value pairs.
+   *
+   * @return array
+   */
+  public function getProductComments($product_id, array $configuration = []) {
+    $comments = [];
+
+    $configuration['arguments']['filter']['productid'] = $product_id;
+
+    $response = $this->retrieveRequest($configuration);
+    if ($response && ($response->getResultCount() > 0)) {
+      $comments = $response->getResults();
     }
-    return $single_content;
+    return $comments;
   }
 
-  public function getMultiple(array $ids, array $parameters = []) {
-    // Set default filter for ids.
-    $parameters['filter']['id'] = $ids;
-    return $this->getAll($parameters);
-  }
+  /**
+   * Retrieve comments for a specific Review based on Review Id.
+   *
+   * @param string $review_id
+   *   Unique ID of the Review.
+   *
+   * @param array $configuration
+   *   API request configuration to pass along. key/value pairs.
+   *
+   * @return array
+   */
+  public function getReviewComments($review_id, array $configuration= []) {
+    $comments = [];
 
-  public function getAll(array $parameters = []) {
-    $configuration = [
-      'arguments' => $parameters,
-    ];
+    $configuration['arguments']['filter']['reviewid'] = $review_id;
 
-    return $this->retrieveRequest('data/reviewcomments', $configuration);
-  }
-
-  public function getProductComments($product_id, array $parameters = []) {
-    $parameters['filter']['productid'] = $product_id;
-    return $this->getAll($parameters);
-  }
-
-  public function getReviewComments($review_id, array $parameters = []) {
-    $parameters['filter']['reviewid'] = $review_id;
-    return $this->getAll($parameters);
-  }
-
-  public function getSubmissionForm(array $parameters = []) {
-
-    $arguments = [];
-
-    if (isset($parameters['reviewid'])) {
-      $arguments['reviewid'] = $parameters['reviewid'];
+    $response = $this->retrieveRequest($configuration);
+    if ($response && ($response->getResultCount() > 0)) {
+      $comments = $response->getResults();
     }
-
-    if (isset($parameters['User'])) {
-      $arguments['User'] = $parameters['User'];
-    } elseif (isset($parameters['UserId'])) {
-      $arguments['UserId'] = $parameters['UserId'];
-    }
-
-    return $this->submit($arguments);
-  }
-
-  public function previewSubmission(array $submission_values = []) {
-    $submission_values['Action'] = 'Preview';
-    return $this->submit($submission_values);
-  }
-
-  public function submitSubmission(array $submission_values = []) {
-    $submission_values['Action'] = 'Submit';
-    return $this->submit($submission_values);
-  }
-
-  private function submit(array $arguments = []) {
-
-    if(!isset($arguments['reviewid'])) {
-      throw new \Exception('Review Id is required for submitting Bazaarvoice Comment submission form.');
-    }
-
-    $configuration = [
-      'method' => 'POST',
-      'arguments' => $arguments,
-    ];
-
-    return $this->submitRequest('data/submitreview', $configuration, 'BazaarvoiceConversations\\Response\\CommentSubmitResponse');
+    return $comments;
   }
 }

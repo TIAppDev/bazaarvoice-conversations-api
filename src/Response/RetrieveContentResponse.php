@@ -30,6 +30,10 @@ class RetrieveContentResponse extends ConversationsResponse {
     return $this->results;
   }
 
+  public function getResultCount() {
+    return count($this->results);
+  }
+
   public function getIncludes() {
     return $this->includes;
   }

@@ -34,7 +34,7 @@ class BazaarvoiceConversations {
   }
 
   public function apiRequest($endpoint, array $configuration = []) {
-    return $this->bazaarvoiceRequest->apiRequest($endpoint, $configuration);
+    return $this->bazaarvoiceRequest->apiRequest($endpoint, $configuration, 'BazaarvoiceConversations\\Response\\ConversationsResponse');
   }
 
 }

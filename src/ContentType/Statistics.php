@@ -6,32 +6,15 @@ namespace BazaarvoiceConversations\ContentType;
  * Class Statistics
  * @package BazaarvoiceConversations\ContentType
  */
-class Statistics extends ContentTypeBase implements RetrieveContentInterface {
+class Statistics extends RetrieveContentTypeBase {
 
-  public function getSingle($id, array $parameters = []) {
-    $single_content = FALSE;
-    // Call getMultiple, passing ID as an array.
-    if ($multiple_content = $this->getMultiple([$id], $parameters)) {
-      // Pop off the returned object.
-      $single_content = array_pop($multiple_content);
-    }
-    return $single_content;
-  }
+  protected $retrieve_endpoint = 'data/reviews';
+  protected $id_field = 'productid';
 
-  public function getMultiple(array $ids, array $parameters = []) {
-    // Set default filter for ids.
-    $parameters['filter']['productid'] = $ids;
-    $parameters['stats'] = ['Reviews','NativeReviews'];
+  public function getMultipleResultsById(array $ids, array $configuration = []) {
+    $configuration['arguments']['stats'] = ['Reviews', 'NativeReviews'];
 
-    return $this->getAll($parameters);
-  }
-
-  public function getAll(array $parameters = []) {
-    $configuration = [
-      'arguments' => $parameters,
-    ];
-
-    return $this->retrieveRequest('data/statistics', $configuration);
+    return parent::getMultipleResultsById($ids, $configuration);
   }
 
   /**
@@ -40,14 +23,21 @@ class Statistics extends ContentTypeBase implements RetrieveContentInterface {
    * @param string $product_id
    *   Unique ID of the product
    *
-   * @param array $parameters
-   *   Array of parameters to pass to endpoint.
+   * @param array $configuration
+   *   API configuration Key/Value pair array to pass to request.
    *
    * @return mixed
    */
-  public function getProductStatistics($product_id, array $parameters = []) {
-    $parameters['filter']['productid'] = $product_id;
-    return $this->getAll($parameters);
+  public function getProductStatistics($product_id, array $configuration = []) {
+    $stats = [];
+    $configuration['arguments']['filter']['productid'] = $product_id;
+
+    $response = $this->retrieveRequest($configuration);
+    if ($response && ($response->getResultCount() > 0)) {
+      $stats = $response->getResults();
+    }
+
+    return $stats;
   }
 
 }

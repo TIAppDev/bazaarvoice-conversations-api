@@ -6,7 +6,7 @@ use BazaarvoiceConversations\ContentType\ContentTypeFactory;
 class ContentTypeFactoryTest extends \PHPUnit_Framework_TestCase {
 
   private function mockRequest() {
-    return $this->getMockBuilder('BazaarvoiceRequest\BazaarvoiceRequest')
+    return $this->getMockBuilder('BazaarvoiceRequest\Request\BazaarvoiceRequest')
       ->disableOriginalConstructor()
       ->disableOriginalClone()
       ->disableArgumentCloning()
@@ -34,7 +34,6 @@ class ContentTypeFactoryTest extends \PHPUnit_Framework_TestCase {
     $this->assertFalse($content_type);
 
   }
-
 
   public function testValidContentTypeReturnsObject() {
 

@@ -2,33 +2,23 @@
 
 namespace BazaarvoiceConversations\ContentType;
 
-class Profiles extends ContentTypeBase implements RetrieveContentInterface {
+/**
+ * Class Profiles
+ * @package BazaarvoiceConversations\ContentType
+ */
+class Profiles extends RetrieveContentTypeBase {
 
-  public function getSingle($id, array $parameters = []) {
-    $single_content = FALSE;
-    // Call getMultiple, passing ID as an array.
-    if ($multiple_content = $this->getMultiple([$id], $parameters)) {
-      // Pop off the returned object.
-      $single_content = array_pop($multiple_content);
-    }
-    return $single_content;
-  }
+  protected $retrieve_endpoint = 'data/authors';
+  protected $id_field = 'id';
 
-  public function getMultiple(array $ids, array $parameters = []) {
-    // Set default filter for ids.
-    $parameters['filter']['id'] = $ids;
-
-    return $this->getAll($parameters);
-  }
-
-  public function getAll(array $parameters = []) {
-    $configuration = [
-      'arguments' => $parameters,
-    ];
-
-    return $this->retrieveRequest('data/authors', $configuration);
-  }
-
+  /**
+   * Authenticate a user token.
+   *
+   * @param string $auth_token
+   *   authentication token.
+   *
+   * @return mixed
+   */
   public function authenticateUser($auth_token) {
 
     $configuration = [
@@ -37,6 +27,6 @@ class Profiles extends ContentTypeBase implements RetrieveContentInterface {
         'Authtoken' => $auth_token,
       ],
     ];
-    return $this->submitRequest('data/authenticateuser', $configuration, 'BazaarvoiceConversations\\Response\\ProfileSubmitResponse');
+    return $this->apiRequest('data/authenticateuser', $configuration, 'BazaarvoiceConversations\\Response\\ProfileSubmitResponse');
   }
 }

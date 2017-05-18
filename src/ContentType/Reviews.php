@@ -6,65 +6,31 @@ namespace BazaarvoiceConversations\ContentType;
  * Class Reviews
  * @package BazaarvoiceConversations\ContentType
  */
-class Reviews extends ContentTypeBase implements RetrieveContentInterface, SubmitContentInterface  {
+class Reviews extends SubmitContentTypeBase {
 
-  public function getSingle($id, array $parameters = []) {
-    $single_content = FALSE;
-    // Call getMultiple, passing ID as an array.
-    if ($multiple_content = $this->getMultiple([$id], $parameters)) {
-      // Pop off the returned object.
-      $single_content = array_pop($multiple_content);
+  protected $retrieve_endpoint = 'data/reviews';
+  protected $submit_endpoint = 'data/submitreview';
+  protected $submit_response_type = 'BazaarvoiceConversations\\Response\\ReviewSubmitResponse';
+
+  /**
+   * Get Reviews for a specific product based on Product Id.
+   *
+   * @param string $product_id
+   *   Unique Product Id.
+   *
+   * @param array $configuration
+   *   key/value array of API configuration.
+   *
+   * @return array
+   */
+  public function getProductReviews($product_id, array $configuration = []) {
+    $reviews = [];
+    $configuration['arguments']['filter']['productid'] = $product_id;
+
+    $response = $this->retrieveRequest($configuration);
+    if ($response && ($response->getResultCount() > 0)) {
+      $reviews = $response->getResults();
     }
-    return $single_content;
-  }
-
-  public function getMultiple(array $ids, array $parameters = []) {
-    // Set default filter for ids.
-    $parameters['filter']['id'] = $ids;
-    return $this->getAll($parameters);
-  }
-
-  public function getAll(array $parameters = []) {
-    $configuration = [
-      'arguments' => $parameters,
-    ];
-
-    return $this->retrieveRequest('data/reviews', $configuration);
-  }
-
-  public function getProductReviews($product_id, array $parameters = []) {
-    $parameters['filter']['productid'] = $product_id;
-    return $this->getAll($parameters);
-  }
-
-  public function getSubmissionForm(array $parameters = []) {
-    $arguments = [];
-
-    if (isset($parameters['User'])) {
-      $arguments['User'] = $parameters['User'];
-    } elseif (isset($parameters['UserId'])) {
-      $arguments['UserId'] = $parameters['UserId'];
-    }
-
-    return $this->submit($arguments);
-  }
-
-  public function previewSubmission(array $submission_values = []) {
-    $submission_values['Action'] = 'Preview';
-    return $this->submit($submission_values);
-  }
-
-  public function submitSubmission(array $submission_values = []) {
-    $submission_values['Action'] = 'Submit';
-    return $this->submit($submission_values);
-  }
-
-  private function submit(array $arguments = []) {
-    $configuration = [
-      'method' => 'POST',
-      'arguments' => $arguments,
-    ];
-
-    return $this->submitRequest('data/submitreview', $configuration, 'BazaarvoiceConversations\\Response\\ReviewSubmitResponse');
+    return $reviews;
   }
 }

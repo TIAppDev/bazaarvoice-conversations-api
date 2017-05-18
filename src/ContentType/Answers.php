@@ -6,75 +6,32 @@ namespace BazaarvoiceConversations\ContentType;
  * Class Answers
  * @package BazaarvoiceConversations\ContentType
  */
-class Answers extends ContentTypeBase implements RetrieveContentInterface, SubmitContentInterface {
+class Answers extends SubmitContentTypeBase {
 
-  public function getSingle($id, array $parameters = []) {
-    $single_content = FALSE;
-    // Call getMultiple, passing ID as an array.
-    if ($multiple_content = $this->getMultiple([$id], $parameters)) {
-      // Pop off the returned object.
-      $single_content = array_pop($multiple_content);
+  protected $retrieve_endpoint = 'data/answers';
+  protected $submit_endpoint = 'data/submitanswer';
+  protected $submit_response_type = 'BazaarvoiceConversations\\Response\\AnswerSubmitResponse';
+
+  /**
+   * Get answers for a particular Product based on id.
+   *
+   * @param string $product_id
+   *   Unique product id.
+   *
+   * @param array $configuration
+   *   API request configuration to pass along. key/value pairs.
+   *
+   * @return mixed
+   */
+  public function getProductAnswers($product_id, array $configuration = []) {
+    $answers = [];
+    $configuration['arguments']['filter']['productid'] = $product_id;
+
+    $response = $this->retrieveRequest($configuration);
+    if ($response && ($response->getResultCount() > 0)) {
+      $answers = $response->getResults();
     }
-    return $single_content;
+    return $answers;
   }
 
-  public function getMultiple(array $ids, array $parameters = []) {
-    // Set default filter for ids.
-    $parameters['filter']['id'] = $ids;
-    return $this->getAll($parameters);
-  }
-
-  public function getAll(array $parameters = []) {
-    $configuration = [
-      'arguments' => $parameters,
-    ];
-
-    return $this->retrieveRequest('data/answers', $configuration);
-  }
-
-  public function getProductAnswers($product_id, array $parameters = []) {
-    $parameters['filter']['productid'] = $product_id;
-    return $this->getAll($parameters);
-  }
-
-  public function getSubmissionForm(array $parameters = []) {
-
-    $arguments = [];
-
-    if (isset($parameters['questionid'])) {
-      $arguments['questionid'] = $parameters['questionid'];
-    }
-
-    if (isset($parameters['User'])) {
-      $arguments['User'] = $parameters['User'];
-    } elseif (isset($parameters['UserId'])) {
-      $arguments['UserId'] = $parameters['UserId'];
-    }
-
-    return $this->submit($arguments);
-  }
-
-  public function previewSubmission(array $submission_values = []) {
-    $submission_values['Action'] = 'Preview';
-    return $this->submit($submission_values);
-  }
-
-  public function submitSubmission(array $submission_values = []) {
-    $submission_values['Action'] = 'Submit';
-    return $this->submit($submission_values);
-  }
-
-  private function submit(array $arguments = []) {
-
-    if(!isset($arguments['questionid'])) {
-      throw new \Exception('Question Id is required for submitting Bazaarvoice Answer submission form.');
-    }
-
-    $configuration = [
-      'method' => 'POST',
-      'arguments' => $arguments,
-    ];
-
-    return $this->submitRequest('data/submitanswer', $configuration, 'BazaarvoiceConversations\\Response\\SubmitAnswerResponse');
-  }
 }
