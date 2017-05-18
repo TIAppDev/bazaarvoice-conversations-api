@@ -28,7 +28,8 @@ class Questions extends ContentTypeBase implements RetrieveContentInterface, Sub
     $configuration = [
       'arguments' => $parameters,
     ];
-    return $this->BazaarvoiceRequest->apiRequest('data/questions', $configuration);
+
+    return $this->retrieveRequest('data/questions', $configuration);
   }
 
   public function getProductQuestions($product_id, array $parameters = []) {
@@ -65,6 +66,7 @@ class Questions extends ContentTypeBase implements RetrieveContentInterface, Sub
       'method' => 'POST',
       'arguments' => $arguments,
     ];
-    return $this->BazaarvoiceRequest->apiRequest('data/submitquestion', $configuration);
+
+    return $this->submitRequest('data/submitquestion', $configuration, 'BazaarvoiceConversations\\Response\\QuestionSubmitResponse');
   }
 }

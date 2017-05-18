@@ -29,7 +29,8 @@ class Categories extends ContentTypeBase implements RetrieveContentInterface {
     $configuration = [
       'arguments' => $parameters,
     ];
-    return $this->BazaarvoiceRequest->apiRequest('data/categories', $configuration);
+
+    return $this->retrieveRequest('data/categories', $configuration);
   }
 
   /**

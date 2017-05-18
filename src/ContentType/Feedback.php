@@ -34,7 +34,7 @@ class Feedback extends ContentTypeBase {
       $arguments['vote'] = $vote;
     }
 
-    $this->submit($arguments);
+    return $this->submit($arguments);
   }
 
   private function submit(array $arguments = []) {
@@ -44,6 +44,6 @@ class Feedback extends ContentTypeBase {
       'arguments' => $arguments,
     ];
 
-    return $this->BazaarvoiceRequest->apiRequest('data/submitfeedback', $configuration);
+    return $this->submitRequest('data/submitfeedback', $configuration, 'BazaarvoiceConversations\\Response\\FeedbackSubmitResponse');
   }
 }

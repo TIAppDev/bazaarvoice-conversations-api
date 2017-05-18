@@ -3,15 +3,21 @@
 namespace BazaarvoiceConversations;
 
 use BazaarvoiceConversations\ContentType\ContentTypeFactory;
-use BazaarvoiceRequest\BazaarvoiceRequestInterface;
+use BazaarvoiceRequest\Request\BazaarvoiceRequestInterface;
 
+/**
+ * Class BazaarvoiceConversations
+ * @package BazaarvoiceConversations
+ */
 class BazaarvoiceConversations {
 
   private $contentTypeFactory;
+  private $bazaarvoiceRequest;
 
   public function __construct(BazaarvoiceRequestInterface $bazaarvoiceRequest) {
     // Instantiate contentTypeFactory.
     $this->contentTypeFactory = new ContentTypeFactory($bazaarvoiceRequest);
+    $this->bazaarvoiceRequest = $bazaarvoiceRequest;
   }
 
   /**
@@ -25,6 +31,10 @@ class BazaarvoiceConversations {
    */
   public function getContentType($type) {
     return $this->contentTypeFactory->build($type);
+  }
+
+  public function apiRequest($endpoint, array $configuration = []) {
+    return $this->bazaarvoiceRequest->apiRequest($endpoint, $configuration);
   }
 
 }

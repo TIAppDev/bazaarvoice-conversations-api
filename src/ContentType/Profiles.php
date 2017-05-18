@@ -25,7 +25,8 @@ class Profiles extends ContentTypeBase implements RetrieveContentInterface {
     $configuration = [
       'arguments' => $parameters,
     ];
-    return $this->BazaarvoiceRequest->apiRequest('data/authors', $configuration);
+
+    return $this->retrieveRequest('data/authors', $configuration);
   }
 
   public function authenticateUser($auth_token) {
@@ -36,7 +37,6 @@ class Profiles extends ContentTypeBase implements RetrieveContentInterface {
         'Authtoken' => $auth_token,
       ],
     ];
-
-    return $this->BazaarvoiceRequest->apiRequest('data/authenticateuser', $configuration);
+    return $this->submitRequest('data/authenticateuser', $configuration, 'BazaarvoiceConversations\\Response\\ProfileSubmitResponse');
   }
 }

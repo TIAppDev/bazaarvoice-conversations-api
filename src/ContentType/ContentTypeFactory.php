@@ -2,7 +2,7 @@
 
 namespace BazaarvoiceConversations\ContentType;
 
-use BazaarvoiceRequest\BazaarvoiceRequestInterface;
+use BazaarvoiceRequest\Request\BazaarvoiceRequestInterface;
 
 /**
  * Class ContentTypeFactory

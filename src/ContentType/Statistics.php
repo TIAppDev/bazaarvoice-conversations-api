@@ -30,7 +30,8 @@ class Statistics extends ContentTypeBase implements RetrieveContentInterface {
     $configuration = [
       'arguments' => $parameters,
     ];
-    return $this->BazaarvoiceRequest->apiRequest('data/statistics', $configuration);
+
+    return $this->retrieveRequest('data/statistics', $configuration);
   }
 
   /**

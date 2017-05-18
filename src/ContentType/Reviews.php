@@ -28,7 +28,8 @@ class Reviews extends ContentTypeBase implements RetrieveContentInterface, Submi
     $configuration = [
       'arguments' => $parameters,
     ];
-    return $this->BazaarvoiceRequest->apiRequest('data/reviews', $configuration);
+
+    return $this->retrieveRequest('data/reviews', $configuration);
   }
 
   public function getProductReviews($product_id, array $parameters = []) {
@@ -63,6 +64,7 @@ class Reviews extends ContentTypeBase implements RetrieveContentInterface, Submi
       'method' => 'POST',
       'arguments' => $arguments,
     ];
-    return $this->BazaarvoiceRequest->apiRequest('data/submitreview', $configuration);
+
+    return $this->submitRequest('data/submitreview', $configuration, 'BazaarvoiceConversations\\Response\\ReviewSubmitResponse');
   }
 }

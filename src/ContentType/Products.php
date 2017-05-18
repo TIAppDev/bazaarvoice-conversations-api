@@ -29,6 +29,7 @@ class Products extends ContentTypeBase implements RetrieveContentInterface {
     $configuration = [
       'arguments' => $parameters,
     ];
-    return $this->BazaarvoiceRequest->apiRequest('data/products', $configuration);
+
+    return $this->retrieveRequest('data/products', $configuration);
   }
 }
