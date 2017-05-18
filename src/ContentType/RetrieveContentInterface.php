@@ -36,5 +36,15 @@ interface RetrieveContentInterface {
    */
   public function getMultiple(array $ids, array $parameters = []);
 
+  /**
+   * Retrieve all content of this type.
+   *
+   * @param array $parameters
+   *   Optional key/value array of filter/sort parameters for retrieving objects.
+   *
+   * @return mixed
+   *  Return array of retrieved objects or boolean false.
+   */
+  public function getAll(array $parameters = []);
 
 }

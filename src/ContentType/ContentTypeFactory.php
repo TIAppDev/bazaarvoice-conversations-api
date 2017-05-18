@@ -27,12 +27,12 @@ class ContentTypeFactory {
    * @return mixed
    *   Boolean false or instance of the class
    */
-  public function build($content_type = NULL) {
+  public function build($content_type) {
     $object = FALSE;
     // Check that a string was passed.
     if (is_string($content_type)) {
       // Build class string.
-      $class = self::NS . ucwords($content_type);
+      $class = self::NS . ucwords(strtolower($content_type));
       // Check to see if this class exists.
       if (class_exists($class)) {
         // Check that this class extends the ContentTypeBase class.

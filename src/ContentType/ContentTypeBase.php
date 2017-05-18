@@ -4,7 +4,7 @@ namespace BazaarvoiceConversations\ContentType;
 
 use BazaarvoiceRequest\BazaarvoiceRequestInterface;
 
-abstract ContentTypeBase {
+abstract class ContentTypeBase {
 
   protected $BazaarvoiceRequest;
 
