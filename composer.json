@@ -28,5 +28,8 @@
     "psr-4": {
       "BazaarvoiceConversations\\Tests\\": "tests/"
     }
+  },
+  "scripts": {
+    "test": "phpunit"
   }
 }
