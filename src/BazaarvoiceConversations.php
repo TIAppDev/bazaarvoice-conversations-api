@@ -9,7 +9,7 @@ use BazaarvoiceRequest\Request\BazaarvoiceRequestInterface;
  * Class BazaarvoiceConversations
  * @package BazaarvoiceConversations
  */
-class BazaarvoiceConversations {
+class BazaarvoiceConversations implements BazaarvoiceConversationsInterface {
 
   private $contentTypeFactory;
   private $bazaarvoiceRequest;
@@ -20,15 +20,6 @@ class BazaarvoiceConversations {
     $this->bazaarvoiceRequest = $bazaarvoiceRequest;
   }
 
-  /**
-   * Return Bazaarvoice Content Type Object from factory.
-   *
-   * @param string $type
-   *   Content Type name.
-   *
-   * @return mixed
-   *    Boolean FALSE or class object.
-   */
   public function getContentType($type) {
     return $this->contentTypeFactory->build($type);
   }
