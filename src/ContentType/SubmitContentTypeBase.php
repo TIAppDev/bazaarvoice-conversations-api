@@ -34,11 +34,11 @@ class SubmitContentTypeBase extends RetrieveContentTypeBase implements SubmitCon
   public function submitSubmission(array $submission_values = [], array $configuration = []) {
     $configuration['arguments'] = array_merge($configuration['arguments'], $submission_values);
     $configuration['arguments']['Action'] = 'Submit';
+    $configuration['method'] = 'POST';
     return  $this->submitRequest($configuration);
   }
 
   public function submitRequest(array $configuration = []) {
-    $configuration['method'] = 'POST';
 
     return $this->apiRequest($this->getSubmitEndpoint(), $configuration, $this->getSubmitResponseType());
   }
