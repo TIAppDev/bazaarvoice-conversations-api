@@ -8,7 +8,7 @@ namespace BazaarvoiceConversations\ContentType;
  */
 class Statistics extends RetrieveContentTypeBase {
 
-  protected $retrieve_endpoint = 'data/reviews';
+  protected $retrieve_endpoint = 'data/statistics';
   protected $id_field = 'productid';
 
   public function getMultipleResultsById(array $ids, array $configuration = []) {
