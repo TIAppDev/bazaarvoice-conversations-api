@@ -24,13 +24,7 @@ class Reviews extends SubmitContentTypeBase {
    * @return array
    */
   public function getProductReviews($product_id, array $configuration = []) {
-    $reviews = [];
     $configuration['arguments']['filter']['productid'] = $product_id;
-
-    $response = $this->retrieveRequest($configuration);
-    if ($response && ($response->getResultCount() > 0)) {
-      $reviews = $response->getResults();
-    }
-    return $reviews;
+    return $this->retrieveRequest($configuration);
   }
 }
